@@ -1,0 +1,27 @@
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+$body-bg: #fff;
+
+$theme-colors: (
+    "primary": #ea1d2c,
+    "secondary": #f5b10d,
+);
+
+input {
+    border-radius: 0;
+    border: none;  
+    border-bottom: 1px solid #ccc;
+    margin: 0;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+@import "bootstrap/scss/bootstrap";
