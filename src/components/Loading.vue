@@ -1,6 +1,6 @@
 <template>
   <div>
-    Carregnado...
+    Carregando...
   </div>
 </template>
 

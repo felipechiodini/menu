@@ -1,27 +1,21 @@
-h1, h2, h3, h4, h5, h6 {
-    margin: 0;
+$primary: #ea1d2c;
+$prefix: '';
+
+.button {
+  background-color: var(--primary);
+  color: #fff;
+  border-radius: 5px;
+  border: none;
 }
 
-$body-bg: #fff;
-
-$theme-colors: (
-    "primary": #ea1d2c,
-    "secondary": #f5b10d,
-);
-
-input {
-    border-radius: 0;
-    border: none;  
-    border-bottom: 1px solid #ccc;
-    margin: 0;
-
-    &:focus {
-        outline: none;
-    }
+.content-size {
+  height: 100vh;
 }
 
-.pointer {
-    cursor: pointer;
+@supports (-webkit-touch-callout: none) {
+  .content-size {
+    height: -webkit-fill-available;
+  }
 }
 
 @import "bootstrap/scss/bootstrap";

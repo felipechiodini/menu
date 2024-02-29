@@ -1,5 +1,5 @@
 <template>
-  <div class="fullscreen-modal" :class="{ 'opened': show === true }">
+  <div class="fullscreen-modal" id="modal" :class="{ 'opened': modelValue === true, 'closed': modelValue === false }">
     <slot />
   </div>
 </template>
@@ -7,16 +7,14 @@
 <script>
 export default {
   name: 'modal',
-  model: {
-    props: 'show'
-  },
   props: {
-    show: {
-      type: Boolean
+    modelValue: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
-    'value': function(newValue) {
+    'modelValue': function(newValue) {
       document.body.style.overflow = (newValue === true) ? 'hidden' : ''
     }
   }
@@ -28,7 +26,7 @@ export default {
   .fullscreen-modal {
     display: none;
     position: fixed;
-    z-index: 9999;
+    z-index: 10;
     top: 0;
     left: 0;
     width: 100%;

@@ -1,10 +1,12 @@
 <template>
   <div class="d-flex align-items-center">
-    <span class="ml-2">{{ label }}</span>
+    <span class="pi pi-circle-fill" :class="color"></span>
+    <span class="ms-2">{{ label }}</span>
   </div>
 </template>
 
 <script>
+
 export default {
   props: {
     status: {
@@ -14,7 +16,20 @@ export default {
   },
   computed: {
     label() {
-      return this.status ? 'Aberto' : 'Fechado'
+      const labels = {
+        true: 'Aberto',
+        false: 'Fechado',
+      }
+
+      return labels[this.status]
+    },
+    color() {
+      const colors = {
+        true: 'text-success',
+        false: 'text-danger',
+      }
+
+      return colors[this.status]
     }
   }
 }

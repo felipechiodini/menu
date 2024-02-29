@@ -1,34 +1,18 @@
 <template>
-  <modal v-model="opened">
-    <transition name="slide" mode="out-in">
-    <template v-if="step === 'first-step'">
-      <step-one @go-back="closeModal()" @next-step="setStep('second-step')" />
-    </template>
-    <template v-else-if="step === 'second-step'">
-      <step-two @go-back="setStep('first-step')" @open-address="setStep('address')" @next-step="setStep('thrid-step')" />
-    </template>
-    <template v-else-if="step === 'thrid-step'">
-      <step-three @go-back="setStep('second-step')" @finished="setStep('finished')" />
-    </template>
-    <template v-else-if="step === 'address'">
-      <addresss @go-back="setStep('second-step')"  />
-    </template>
-    <template v-else-if="step === 'finished'">
-      <finished  />
-    </template>
-  </transition>
-  </modal>
+  <Modal v-model="openModal">
+    <component class="w-100" @back="goBack()" @next="nextStep()" :is="currentStep" />
+  </Modal>
 </template>
 
 <script>
-import Modal from './Modal.vue'
+import Modal from '@/components/Modal.vue'
 import StepOne from '@/components/Cart/StepOne.vue'
 import StepTwo from '@/components/Cart/StepTwo.vue'
 import StepThree from '@/components/Cart/StepThree.vue'
-import Addresss from '@/components/Cart/Address.vue'
 import Finished from '@/components/Cart/Finished.vue'
-import FloatButton from '@/components/FloatButton.vue';
-import { mapGetters } from 'pinia';
+import { mapState, mapActions } from 'pinia'
+import { useCartStore } from '@/stores/cart'
+import Api from '@/js/Api'
 
 export default {
   name: 'Cart',
@@ -37,55 +21,80 @@ export default {
     StepOne,
     StepTwo,
     StepThree,
-    FloatButton,
-    Addresss,
-    Finished
+    Finished,
+  },
+  props: {
+    open: {
+      default: null
+    }
   },
   data: () => {
     return {
-      step: 'first-step',
-      opened: false,
-    }
-  },
-  watch: {
-    'hasProducts': function(value) {
-      if (value === false) this.closeModal()
+      step: 1
     }
   },
   computed: {
-    ...mapGetters('cart', ['numberProducts', 'hasProducts', 'cartTotalPrice'])
-  },
-  mounted() {
-    this.$root.$on('child2', () => console.log('uidwahufa'));
+    ...mapState(useCartStore, [
+      'numberProducts',
+      'hasProducts',
+      'cartTotalPrice',
+      'products',
+      'delivery',
+      'payment',
+      'customer',
+      'address'
+    ]),
+    openModal() {
+      return this.open === true
+    },
+    currentStep() {
+      const steps = {
+        1: 'step-one',
+        2: 'step-two',
+        3: 'step-three'
+      }
+
+      return steps[this.step]
+    }
   },
   methods: {
-    setStep(name) {
-      this.step = name
-    },
-    openModal() {
-      this.opened = true
-    },
-    closeModal() {
-      this.opened = false
+    ...mapActions(useCartStore, ['resetCart']),
+    nextStep() {
+      if (this.step === 3) {
+        this.placeOrder()
+      } else {
+        this.step++
+      }
     },
     goBack() {
-      this.step--
+      if (this.step === 1) {
+        this.close()
+      } else {
+        this.step--
+      }
+    },
+    close() {
+      this.$emit('close')
+    },
+    resolvePayload() {
+      return {
+        customer: this.customer,
+        address: this.address,
+        products: this.products,
+        delivery: this.delivery,
+        payment: this.payment
+      }
+    },
+    placeOrder() {
+      Api.post(`${this.$route.params.slug}/order/place`, this.resolvePayload())
+        .then(({ data }) => {
+          this.close()
+          this.resetCart()
+          this.step = 1
+        }).catch(() => {
+          alert('error')
+        })
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-.slide-move,
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.2s ease;
-}
-
-.slide-enter-from,
-.slide-leave-to {
-  opacity: 0;
-}
-
-</style>

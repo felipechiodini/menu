@@ -1,9 +1,9 @@
 <template>
-  <div class="d-flex border-top">
+  <div class="d-flex border-top px-2">
     <div class="col p-2">
       <h3 class="product-title">{{ product.name }}</h3>
       <p class="text-muted">{{ product.description }}</p>
-      <!-- <price :price="" /> -->
+      <price :price="product.price" />
     </div>
     <img class="wioahfgowaf" :src="product.photo.src">
   </div>

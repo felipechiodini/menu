@@ -10,7 +10,7 @@
         <b-input v-model="schedule.close_at" type="time"></b-input>
       </div>
     </div>
-    <b-button @click="save()" variant="primary">Salvar</b-button>
+    <button @click="save()" variant="primary">Salvar</button>
   </div>
 </template>
 

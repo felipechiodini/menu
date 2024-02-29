@@ -8,7 +8,7 @@
         <h5>Loja não encontrada</h5>
       </div>
     </div>
-    <store v-else :store="store" />
+    <Store v-else />
   </div>
 </template>
 
@@ -16,6 +16,8 @@
 import Loading from '@/components/Loading.vue'
 import Api from '@/js/Api'
 import Store from '@/components/Store.vue'
+import { mapActions } from 'pinia'
+import { useStore } from '@/stores/store.js'
 
 export default {
   components: {
@@ -33,10 +35,11 @@ export default {
     this.loadStore()
   },
   methods: {
+    ...mapActions(useStore, ['setStore']),
     loadStore() {
       this.loading = true
       Api.get(`${this.$route.params.slug}/store`).then(({ data }) => {
-        this.store = data.store
+        this.setStore(data.store)
       }).catch(() => {
         this.error = true
       }).finally(() => {

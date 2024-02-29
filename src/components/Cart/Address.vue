@@ -1,36 +1,55 @@
 <template>
-  <div>
-    <cart-header @go-back="$emit('go-back')" icon="arrow_back_ios" name="Endereço" />
-    <div class="d-flex flex-column p-3 box">
-      <label for="bairro">Bairro</label>
-      <b-form-select id="bairro" :options="store.shipping_options" v-model="address.id" text-field="name" value-field="id" />
-      <b-input placeholder="Endereço" type="text" v-model="address.street" />
-      <b-input v-mask="'#########'" placeholder="Número" v-model="address.number" />
-      <b-input placeholder="Complemento" v-model="address.complement" />
-      <b-button class="border-none bg-primary w-100" @click="confirm()">
-        <span class="text-white">Confirmar</span>
-      </b-button>
+  <Modal v-model="show">
+    <div class="d-flex flex-column w-100">
+      <CartHeader @click="close()" name="Endereço" />
+      <div class="d-flex flex-column p-3 box">
+        <label for="bairro">Bairro</label>
+        <select class="form-select" id="bairro" v-model="address.id">
+          <option :value="option.id" v-for="(option, key) in store.shipping_options">
+            {{ option.name }}
+          </option>
+        </select>
+        <input class="form-control" placeholder="Endereço" type="text" v-model="address.street" />
+        <input class="form-control" placeholder="Número" v-maska data-maska="#########"  v-model="address.number" />
+        <input class="form-control" placeholder="Complemento" v-model="address.complement" />
+        <button class="btn w-100 btn-primary text-white" @click="confirm()">
+          Confirmar
+        </button>
+      </div>
     </div>
-  </div>
+  </Modal>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'pinia'
+import { mapState } from 'pinia'
 import CartHeader from './Header.vue'
+import Modal from '../Modal.vue'
+import { useStore } from '@/stores/store'
+import { useCartStore } from '@/stores/cart'
 
 export default {
   components: {
-    CartHeader
+    CartHeader,
+    Modal
+  },
+  props: {
+    open: {
+      default: false
+    }
   },
   computed: {
-    ...mapGetters('store', ['store']),
-    ...mapGetters('cart', ['address']),
+    ...mapState(useStore, ['store']),
+    ...mapState(useCartStore, ['address']),
+    show() {
+      return this.open === true
+    }
   },
   methods: {
-    ...mapActions('cart', ['setAddress']),
     confirm() {
-      this.setAddress(this.address)
-      this.$emit('go-back')
+      this.close()
+    },
+    close() {
+      this.$emit('update-open', false)
     }
   }
 }

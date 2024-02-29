@@ -1,9 +1,5 @@
 <template>
-  <div class="d-block mx-auto my-3" v-if="text">
-    <strong>
-      <p class="bg-warning p-2 rounded mx-2">{{ text }}</p>
-    </strong>
-  </div>
+  <p class="rounded shadow p-2 border">{{ text }}</p>
 </template>
 
 <script>
@@ -12,15 +8,6 @@ export default {
     text: {
       type: String
     }
-  },
-  computed: {
-    label() {
-      return this.status ? 'Aberto' : 'Fechada'
-    }
   }
 }
 </script>
-
-<style>
-
-</style>

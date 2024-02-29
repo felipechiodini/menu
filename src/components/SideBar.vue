@@ -1,11 +1,11 @@
 <template>
   <b-sidebar id="sidebar" shadow>
     <div class="container">
-      <b-button :variant="variant('/produtos')" class="text-left w-100 pointer p-2" to="/produtos">Produtos</b-button>
-      <b-button :variant="variant('/garcons')" class="text-left w-100 pointer p-2" to="/garcons">Garçons</b-button>
-      <b-button :variant="variant('/combos')" class="text-left w-100 pointer p-2" to="/combos">Combos</b-button>
-      <b-button :variant="variant('/comandas')" class="text-left w-100 pointer p-2" to="/comandas">Comandas</b-button>
-      <b-button :variant="variant('/configuracoes')" class="text-left w-100 pointer p-2" to="/configuracoes">Configurações</b-button>
+      <button :variant="variant('/produtos')" class="text-left w-100 pointer p-2" to="/produtos">Produtos</button>
+      <button :variant="variant('/garcons')" class="text-left w-100 pointer p-2" to="/garcons">Garçons</button>
+      <button :variant="variant('/combos')" class="text-left w-100 pointer p-2" to="/combos">Combos</button>
+      <button :variant="variant('/comandas')" class="text-left w-100 pointer p-2" to="/comandas">Comandas</button>
+      <button :variant="variant('/configuracoes')" class="text-left w-100 pointer p-2" to="/configuracoes">Configurações</button>
     </div>
   </b-sidebar>
 </template>

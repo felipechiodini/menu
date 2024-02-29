@@ -1,20 +1,28 @@
 <template>
-  <div class="d-flex justify-content-center align-items-center w-100 bg-primary p-3">
-    <span @click="$emit('go-back')" class="material-icons text-white" :class="{ 'down': down }">{{ icon }}</span>
-    <h3 class="col text-white">{{ name }}</h3>
+  <div class="d-flex justify-content-center align-items-center w-100 bg-primary p-2">
+    <button @click="$emit('go-back')" class="pi pi-chevron-left text-white">
+      <i class=""></i>  
+    </button>
+    <span class="col text-white">{{ name }}</span>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['icon', 'name', 'down']
+  props: {
+    name: {
+      default: null
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 
-  .down {
-    transform: rotate(90deg);
-  }
+ button {
+  border: none;
+  background-color: transparent;
+  padding: .4rem;
+ }
 
 </style>
