@@ -4,8 +4,8 @@
       <CartHeader @click="close()" name="Endereço" />
       <div class="d-flex flex-column p-3 box">
         <label for="bairro">Bairro</label>
-        <select class="form-select" id="bairro" v-model="address.id">
-          <option :value="option.id" v-for="(option, key) in store.shipping_options">
+        <select class="form-select" id="bairro" v-model="address.neighborhood_id">
+          <option :value="option.id" v-for="(option, key) in store.neighborhood_options">
             {{ option.name }}
           </option>
         </select>

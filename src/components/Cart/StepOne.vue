@@ -34,7 +34,7 @@
       <table class="mb-3 mt-1 w-100">
         <tr>
           <td class="p-1">Total</td>
-          <td class="p-1" align="right">{{ currency(cartTotalPrice) }}</td>
+          <td class="p-1" align="right">{{ currency(cartTotal) }}</td>
         </tr>
       </table>
       <button class="btn btn-primary text-white" @click="$emit('next')">
@@ -55,7 +55,7 @@ export default {
     CartHeader
   },
   computed: {
-    ...mapState(useCartStore, ['products', 'numberProducts', 'hasProducts', 'cartTotalPrice'])
+    ...mapState(useCartStore, ['products', 'numberProducts', 'hasProducts', 'cartTotal'])
   },
   methods: {
     ...mapActions(useCartStore, ['decrementProduct', 'incrementProduct']),

@@ -9,19 +9,21 @@
       <table class="resume-table">
         <tr>
           <td>Subtotal</td>
-          <td align="right">{{ currency(cartTotalPrice) }}</td>
+          <td align="right">{{ currency(cartTotalProducts) }}</td>
         </tr>
         <tr>
           <td>Entrega</td>
-          <td align="right">{{ currency(5) }}</td>
+          <td align="right">{{ currency(deliveryFee) }}</td>
         </tr>
         <tr class="border-top">
           <td>Total</td>
-          <td class="total" align="right">{{ (85) }}</td>
+          <td class="total" align="right">{{ currency(cartTotal) }}</td>
         </tr>
       </table>
-      <button class="btn border-none bg-primary btn-add" @click="$emit('next')">
-        <span class="text-white">Confirmar Pedido</span>
+      <button :disabled="button.disabled" class="btn border-none bg-primary btn-add" @click="$emit('next')">
+        <span class="text-white">
+          {{ button.label }}
+        </span>
       </button>
     </div>
   </div>
@@ -29,7 +31,7 @@
 
 <script>
 import CartHeader from '@/components/Cart/Header.vue'
-import { mapActions, mapState } from 'pinia'
+import { mapState } from 'pinia'
 import { useCartStore } from '@/stores/cart'
 import { useStore } from '@/stores/store'
 
@@ -40,12 +42,19 @@ export default {
   },
   computed: {
     ...mapState(useStore, ['store']),
-    ...mapState(useCartStore, ['cartTotalPrice', 'deliveryFee', 'payment'])
-  },
-  methods: {
-    ...mapActions(useCartStore, ['setPayment', 'finishCart', 'clearCart']),
-    fawjfwioafkwioa(payment) {
-      this.setPayment(payment.id)
+    ...mapState(useCartStore, ['cartTotalProducts', 'deliveryFee', 'cartTotal', 'payment']),
+    button() {
+      if (this.payment.type === null) {
+        return {
+          disabled: true,
+          label: 'Aguardando Método de Pagamento',
+        }
+      } else {
+        return {
+          disabled: false,
+          label: 'Enviar Pedido',
+        }
+      }
     }
   }
 }

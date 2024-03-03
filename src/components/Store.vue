@@ -39,7 +39,7 @@
       <button class="row justify-content-between border-none bg-primary btn-add" @click="showCart = true">
         <span class="col text-white">{{ numberProducts }}</span>
         <span class="col text-white">Ver Carrinho</span>
-        <span class="col text-white">{{ currency(cartTotalProductsPrice) }}</span>
+        <span class="col text-white">{{ currency(cartTotalProducts) }}</span>
       </button>
     </div>
   </div>
@@ -92,7 +92,7 @@ export default {
   },
   computed: {
     ...mapState(useStore, ['store']),
-    ...mapState(useCartStore, ['hasProducts', 'numberProducts', 'cartTotalPrice', 'hasProducts', 'cartTotalProductsPrice']),
+    ...mapState(useCartStore, ['hasProducts', 'numberProducts', 'cartTotal', 'hasProducts', 'cartTotalProducts']),
   },
   mounted() {
     this.getDistance()

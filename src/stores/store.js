@@ -6,8 +6,6 @@ export const useStore = defineStore('store', {
       store: null,
     }
   },
-  getters: {
-  },
   actions: {
     setStore(store) {
       this.store = store

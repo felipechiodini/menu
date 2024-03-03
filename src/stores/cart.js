@@ -1,40 +1,48 @@
 import { defineStore } from 'pinia'
+import { useStore } from './store'
 
 export const useCartStore = defineStore('cart', {
   state: () => {
     return {
       products: [],
-      delivery_fee: null,
       delivery: {
-        type: 1
+        type: null
       },
       customer: {
-        name: 'Felipe Bona',
-        cellphone: '47999097073'
+        name: null,
+        cellphone: null
       },
       address: {
-        street: 'Arthur Gonçalvez de Araújo',
-        neighborhood: 'João Pessoa',
-        city: 'Jaraguá do Sul',
-        number: 500,
+        neighborhood_id: null,
+        street: null,
+        city: null,
+        number: null,
       },
       payment: {
-        type: 3
+        type: null
       }
     }
   },
   getters: {
-    cartTotalProductsPrice: (state) => {
+    cartTotalProducts: (state) => {
       return state.products.reduce((acumulator, product) => acumulator += (product.price.to * product.count), 0)
     },
-    cartTotalPrice: (state) => {
-      return state.cartTotalProductsPrice + state.delivery_fee
+    cartTotal: (state) => {
+      return state.cartTotalProducts + state.deliveryFee ?? 0
+    },
+    deliveryFee: (state) => {
+      return state.neighborhood?.price || null
+    },
+    neighborhood(state) {
+      if (state.address.neighborhood_id) {
+        const store = useStore()
+        return store.store.neighborhood_options.find(neighborhood => neighborhood.id === state.address.neighborhood_id)
+      }
+
+      return null
     },
     cartProducts: (state) => {
       return state.products
-    },
-    deliveryFee: (state) => {
-      return state.delivery_fee
     },
     numberProducts: (state) => {
       return state.products.reduce((acumulator, product) => acumulator += product.count, 0)
@@ -71,27 +79,22 @@ export const useCartStore = defineStore('cart', {
     setDelivery(id) {
       this.delivery.id = id
     },
-    setCustomer(payload) {
-      this.customer = payload
-    },
     resetCart() {
-      this.products = [],
-      this.delivery_fee = null,
-      this.delivery = {
-        type: 1
+      products = [],
+      delivery = {
+        type: null
       },
-      this.customer = {
+      customer = {
         name: null,
-        cellphone: null,
-        document: null
+        cellphone: null
       },
-      this.address = {
+      address = {
+        neighborhood_id: null,
         street: null,
-        neighborhood: null,
         city: null,
         number: null,
       },
-      this.payment = {
+      payment = {
         type: null
       }
     }

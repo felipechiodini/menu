@@ -37,7 +37,7 @@ export default {
     ...mapState(useCartStore, [
       'numberProducts',
       'hasProducts',
-      'cartTotalPrice',
+      'cartTotal',
       'products',
       'delivery',
       'payment',
