@@ -20,10 +20,10 @@
             {{ store.address.street }},
             {{ store.address.number }} -
             {{ store.address.neighborhood }},
-            {{ store.address.city }}
+            {{ store.address.city }},
+            {{ store.address.state }}
           </span>
         </div>
-        <!-- <h5>{{ labelDistance }}</h5> -->
         <Warning class="mt-3" v-if="store.configuration.warning" :text="store.configuration.warning" />
       </div>
       <div class="faopwjfowpafhoiwafhiowa">
@@ -51,7 +51,7 @@
     </div>
   </div>
   <ProductPreview v-model="selectedProduct" />
-  <Cart @open-preview="daowpjfowajfaw" v-model="showCart" @close="showCart = false" />
+  <Cart v-model="showCart" @close="showCart = false" />
 </template>
 
 <script>
@@ -61,11 +61,10 @@ import Warning from '@/components/Warning.vue'
 import Product from '@/components/Product.vue'
 import ProductPreview from '@/components/ProductPreview.vue'
 import Modal from './Modal.vue'
-import Api from '@/js/Api'
-import { mapActions, mapState } from 'pinia'
-import { useCartStore } from '@/stores/cart'
 import Loading from './Loading.vue'
 import Cart from './Cart.vue'
+import { mapActions, mapState } from 'pinia'
+import { useCartStore } from '@/stores/cart'
 import { useStore } from '@/stores/store';
 
 export default {
@@ -77,7 +76,6 @@ export default {
     Carousel,
     Cart,
     Loading,
-    // CartButton,
     Modal,
     ProductPreview,
   },
@@ -101,30 +99,8 @@ export default {
     ...mapState(useStore, ['store']),
     ...mapState(useCartStore, ['hasProducts', 'numberProducts', 'cartTotal', 'hasProducts', 'cartTotalProducts']),
   },
-  mounted() {
-    this.getDistance()
-  },
   methods: {
     ...mapActions(useCartStore, ['addProduct']),
-    getDistance() {
-      navigator.geolocation.getCurrentPosition((data) => {
-        const {
-          latitude,
-          longitude
-        } = data.coords
-        Api.get(`${this.$route.params.slug}/distance`, {
-            params: {
-              latitude,
-              longitude
-            }
-          })
-          .then(({
-            data
-          }) => {
-            this.distance = data.distance
-          })
-      })
-    },
     showProduct(product) {
       this.selectedProduct = product
     },
@@ -146,10 +122,6 @@ export default {
         let minutes = time % 60;
         return hours + "h" + minutes;
       }
-    },
-    daowpjfowajfaw(id) {
-      this.selectedProduct = this.store.products.find(i => i.id === id)
-      console.log(this.selectedProduct)
     }
   }
 }
