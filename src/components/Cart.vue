@@ -91,7 +91,8 @@ export default {
           this.close()
           this.resetCart()
           this.step = 1
-        }).catch(() => {
+        }).catch((error) => {
+          console.log(error)
           alert('error')
         })
     }

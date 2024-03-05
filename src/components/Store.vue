@@ -8,16 +8,21 @@
       </Carousel>
       <div class="p-3">
         <h3 class="title mb-3">{{ store.name }}</h3>
-        <StoreStatus :status="store.open" />
-        <span v-if="distance">
-          {{ distance.text }}
-        </span>
-        <span v-for="(option, key) in store.delivery_options" :key="key">
-          {{ option.name }}: {{ option.time }}
-        </span>
-        <span>
-          {{ 'Pedido minimo: ' + currency(store.configuration.minimum_order_value) }}
-        </span>
+        <StoreStatus :status="store.open.is_open" />
+        <div class="d-flex flex-column">
+          <span v-for="(option, key) in store.delivery_options" :key="key">
+            {{ option.name }}: {{ time(option.minutes) }}
+          </span>
+          <span v-if="store.configuration.minimum_order_value">
+            {{ 'Pedido minimo: ' + currency(store.configuration.minimum_order_value) }}
+          </span>
+          <span>
+            {{ store.address.street }},
+            {{ store.address.number }} -
+            {{ store.address.neighborhood }},
+            {{ store.address.city }}
+          </span>
+        </div>
         <!-- <h5>{{ labelDistance }}</h5> -->
         <Warning class="mt-3" v-if="store.configuration.warning" :text="store.configuration.warning" />
       </div>
@@ -35,16 +40,18 @@
           :category="product.category_name" />
       </div>
     </div>
-    <div class="row align-items-center border-top justify-content-center w-100 py-3 shadow-lg bg-white m-0" v-if="hasProducts" style="height: 11vh;">
-      <button class="row justify-content-between border-none bg-primary btn-add" @click="showCart = true">
-        <span class="col text-white">{{ numberProducts }}</span>
-        <span class="col text-white">Ver Carrinho</span>
-        <span class="col text-white">{{ currency(cartTotalProducts) }}</span>
+    <div class="border-top w-100 p-3 shadow-lg bg-white" v-if="hasProducts" style="height: 11vh;">
+      <button class="btn btn-primary w-100 p-2" style="font-size: .8rem;" @click="showCart = true">
+        <div class="d-flex justify-content-around">
+          <span class="col text-white">{{ numberProducts }}</span>
+          <span class="col text-white">Ver Carrinho</span>
+          <span class="col text-white">{{ currency(cartTotalProducts) }}</span>
+        </div>
       </button>
     </div>
   </div>
   <ProductPreview v-model="selectedProduct" />
-  <Cart v-model="showCart" @close="showCart = false" />
+  <Cart @open-preview="daowpjfowajfaw" v-model="showCart" @close="showCart = false" />
 </template>
 
 <script>
@@ -130,6 +137,19 @@ export default {
         top: offsetPosition,
         behavior: "smooth"
       });
+    },
+    time(time) {
+      if (time < 60) {
+        return time + " minutos";
+      } else {
+        let hours = Math.floor(time / 60);
+        let minutes = time % 60;
+        return hours + "h" + minutes;
+      }
+    },
+    daowpjfowajfaw(id) {
+      this.selectedProduct = this.store.products.find(i => i.id === id)
+      console.log(this.selectedProduct)
     }
   }
 }

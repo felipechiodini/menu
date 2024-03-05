@@ -80,21 +80,21 @@ export const useCartStore = defineStore('cart', {
       this.delivery.id = id
     },
     resetCart() {
-      products = [],
-      delivery = {
+      this.products = [],
+      this.delivery = {
         type: null
       },
-      customer = {
+      this.customer = {
         name: null,
         cellphone: null
       },
-      address = {
+      this.address = {
         neighborhood_id: null,
         street: null,
         city: null,
         number: null,
       },
-      payment = {
+      this.payment = {
         type: null
       }
     }

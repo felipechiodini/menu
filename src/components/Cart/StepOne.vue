@@ -2,7 +2,7 @@
   <div class="d-flex flex-column content-size">
     <CartHeader @click="$emit('back')" />
     <div class="flex-grow-1 overflow-auto">
-      <div class="d-flex m-0 p-3 border-bottom" v-for="(product, key) in products" :key="key">
+      <div class="d-flex m-0 p-3 border-bottom" @click="$emit('open-preview', product.id)" v-for="(product, key) in products" :key="key">
         <img class="image rounded" :src="product.photo.src">
         <div class="col px-2">
           <h6 class="mb-3 title">{{ product.name }}</h6>
@@ -19,7 +19,7 @@
           <span class="title">{{ currency(calculateTotal(product)) }}</span>
         </div>
         <div class="col-auto ms-auto p-0 align-self-end d-flex align-items-center justify-content-center p-1 border rounded">
-          <button class="btn" @click="decrementProduct(product.id)">
+          <button class="btn" @click="localDecrement(product.id)">
             <span v-if="product.count === 1" class="pi pi-trash"></span>
             <span v-else>-</span>
           </button>
@@ -37,9 +37,14 @@
           <td class="p-1" align="right">{{ currency(cartTotal) }}</td>
         </tr>
       </table>
-      <button class="btn btn-primary text-white" @click="$emit('next')">
-        Continuar
-      </button>
+      <div class="d-flex justify-content-between gap-2">
+        <button class="btn btn-primary text-white w-100" @click="$emit('back')">
+          Pedir Mais
+        </button>
+        <button class="btn btn-primary text-white w-100" @click="$emit('next')">
+          Continuar
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -59,6 +64,13 @@ export default {
   },
   methods: {
     ...mapActions(useCartStore, ['decrementProduct', 'incrementProduct']),
+    localDecrement(id) {
+      this.decrementProduct(id)
+
+      if (this.numberProducts === 0) {
+        this.$emit('back') // close modal
+      }
+    },
     calculateTotal(product) {
       return product.price.to * product.count
     }

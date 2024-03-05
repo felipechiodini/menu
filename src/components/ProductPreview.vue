@@ -90,11 +90,11 @@ export default {
     return {
       product: null,
       counter: 1,
-      loading: false,
-      opened: false,
       observation: null,
       additionals: [],
       replacements: [],
+      loading: false,
+      opened: false,
     }
   },
   computed: {
@@ -182,6 +182,9 @@ export default {
     },
     closeModal() {
       this.$emit('update:modelValue', null)
+      this.product = null
+      this.observation = null
+      this.counter = 1
     },
     totalAdditionals() {
       return this.additionals.reduce((acumulator, additional) => acumulator += additional.amount, 1)
