@@ -5,7 +5,7 @@
     </button>
     <div class="d-flex flex-column" v-if="modelValue !== null">
       <div class="flex-grow-1 overflow-auto">
-        <img width="100%" src="https://storage.googleapis.com/intrepid-snow-169619.appspot.com/files/backend/66011019248D4F91AEDB6C5CD60F82A0-0E9B5825CD664072870992304367C312.jpeg">
+        <img style="width: 100%; height: 350px; object-fit: cover;" :src="modelValue.photo.src">
         <div class="p-2">
           <h6 class="product-title">{{ modelValue.name }}</h6>
           <p class="product-description">{{ modelValue.description }}</p>

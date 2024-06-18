@@ -1,44 +1,48 @@
 <template>
   <div class="d-flex flex-column content-size">
     <div class="flex-grow-1 overflow-auto">
-      <Carousel :value="store.banners" :numVisible="1" :circular="true" :showNavigators="false" :showIndicators="false" :autoplayInterval="3000">
-        <template #item="slotProps">
-          <img width="100%" :src="slotProps.data.src" alt="">
-        </template>
-      </Carousel>
-      <div class="p-3">
-        <h3 class="title mb-3">{{ store.name }}</h3>
-        <StoreStatus :status="store.open.is_open" />
-        <div class="d-flex flex-column">
-          <span v-for="(option, key) in store.delivery_options" :key="key">
-            {{ option.name }}: {{ time(option.minutes) }}
-          </span>
-          <span v-if="store.configuration.minimum_order_value">
-            {{ 'Pedido minimo: ' + currency(store.configuration.minimum_order_value) }}
-          </span>
-          <span>
-            {{ store.address.street }},
-            {{ store.address.number }} -
-            {{ store.address.neighborhood }},
-            {{ store.address.city }},
-            {{ store.address.state }}
-          </span>
+      <div style="position: relative;">
+        <img style="height: 200px; width: 100%; object-fit: cover;" :src="store.banners[0].src" alt="">
+      </div>
+      <div style="margin: -20px 0; position: relative; z-index: 10; border-radius: 20px; background-color: #fff;">
+        <div class="p-3">
+          <div class="d-flex align-items-center">
+            <h6 class="title">{{ store.name }}</h6>
+            <Logo class="ms-auto" />
+          </div>
+          <!-- <StoreStatus :status="store.open.is_open" /> -->
+          <div class="d-flex flex-column">
+            <span v-for="(option, key) in store.delivery_options" :key="key">
+              {{ option.name }}: {{ time(option.minutes) }}
+            </span>
+            <span v-if="store.configuration.minimum_order_value">
+              {{ 'Pedido minimo: ' + currency(store.configuration.minimum_order_value) }}
+            </span>
+            <span>
+              {{ store.address.street }},
+              {{ store.address.number }} -
+              {{ store.address.neighborhood }},
+              {{ store.address.city }},
+              {{ store.address.state }}
+            </span>
+          </div>
+          <Warning class="mt-3" v-if="store.configuration.warning" :text="store.configuration.warning" />
         </div>
-        <Warning class="mt-3" v-if="store.configuration.warning" :text="store.configuration.warning" />
+        <div class="faopwjfowpafhoiwafhiowa">
+          <button v-for="(category, key) in store.categories" :key="key" @click="scrollToCategory(category)">
+            {{ category.name }}
+          </button>
+        </div>
+        <div>
+          <Product
+            @click="showProduct(product)"
+            v-for="(product, key) in store.products"
+            :key="key"
+            :product="product"
+            :category="product.category_name" />
+        </div>
       </div>
-      <div class="faopwjfowpafhoiwafhiowa">
-        <button v-for="(category, key) in store.categories" :key="key" @click="scrollToCategory(category)">
-          {{ category.name }}
-        </button>
-      </div>
-      <div>
-        <Product
-          @click="showProduct(product)"
-          v-for="(product, key) in store.products"
-          :key="key"
-          :product="product"
-          :category="product.category_name" />
-      </div>
+
     </div>
     <div class="border-top w-100 p-3 shadow-lg bg-white" v-if="hasProducts" style="height: 11vh;">
       <button class="btn btn-primary w-100 p-2" style="font-size: .8rem;" @click="showCart = true">
@@ -66,6 +70,7 @@ import Cart from './Cart.vue'
 import { mapActions, mapState } from 'pinia'
 import { useCartStore } from '@/stores/cart'
 import { useStore } from '@/stores/store';
+import Logo from '@/components/Logo.vue'
 
 export default {
   name: 'Home',
@@ -78,6 +83,7 @@ export default {
     Loading,
     Modal,
     ProductPreview,
+    Logo
   },
   data: () => {
     return {
@@ -128,8 +134,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
   .title {
-    font-size: 1.7rem;
+    font-size: 1.3rem;
+    margin-bottom: 0;
   }
 
   .btn-add {
