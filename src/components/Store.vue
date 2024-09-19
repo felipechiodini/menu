@@ -1,5 +1,7 @@
 <template>
   <div class="d-flex flex-column content-size">
+    <div class="bg-primary mb-3" style="height: 120px;">
+    </div>
     <div class="flex-grow-1 overflow-auto">
       <div style="margin: -20px 0; position: relative; z-index: 10; border-radius: 20px; background-color: #fff;">
         <div class="p-3">
