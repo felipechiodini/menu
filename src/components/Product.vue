@@ -5,7 +5,7 @@
       <p class="text-muted">{{ product.description }}</p>
       <price :price="product.price" />
     </div>
-    <img class="wioahfgowaf" :src="product.photo.src">
+    <img class="wioahfgowaf" :src="product.image">
   </div>
 </template>
 

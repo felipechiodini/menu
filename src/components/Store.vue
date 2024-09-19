@@ -12,8 +12,8 @@
             <span v-for="(option, key) in store.delivery_options" :key="key">
               {{ option.name }}: {{ time(option.minutes) }}
             </span>
-            <span v-if="store.configuration.minimum_order_value">
-              {{ 'Pedido minimo: ' + currency(store.configuration.minimum_order_value) }}
+            <span v-if="store.configuration?.minimum_order_value">
+              {{ 'Pedido minimo: ' + currency(store.configuration?.minimum_order_value) }}
             </span>
             <span>
               {{ store.address.street }},
@@ -23,7 +23,7 @@
               {{ store.address.state }}
             </span>
           </div>
-          <Warning class="mt-3" v-if="store.configuration.warning" :text="store.configuration.warning" />
+          <!-- <Warning class="mt-3" v-if="store.configuration.warning" :text="store.configuration.warning" /> -->
         </div>
         <div class="faopwjfowpafhoiwafhiowa">
           <button v-for="(category, key) in store.categories" :key="key" @click="scrollToCategory(category)">
