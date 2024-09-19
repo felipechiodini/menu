@@ -1,9 +1,6 @@
 <template>
   <div class="d-flex flex-column content-size">
     <div class="flex-grow-1 overflow-auto">
-      <div style="position: relative;">
-        <img style="height: 200px; width: 100%; object-fit: cover;" :src="store.banners[0].src" alt="">
-      </div>
       <div style="margin: -20px 0; position: relative; z-index: 10; border-radius: 20px; background-color: #fff;">
         <div class="p-3">
           <div class="d-flex align-items-center">
