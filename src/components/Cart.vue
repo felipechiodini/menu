@@ -51,7 +51,8 @@ export default {
       const steps = {
         1: 'step-one',
         2: 'step-two',
-        3: 'step-three'
+        3: 'step-three',
+        4: 'finished'
       }
 
       return steps[this.step]
@@ -88,9 +89,8 @@ export default {
     placeOrder() {
       Api.post(`${this.$route.params.slug}/order/place`, this.resolvePayload())
         .then(({ data }) => {
-          this.close()
           this.resetCart()
-          this.step = 1
+          this.step = 4
         }).catch((error) => {
           console.log(error)
           alert('error')
