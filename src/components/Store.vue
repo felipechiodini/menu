@@ -1,9 +1,7 @@
 <template>
   <div class="d-flex flex-column content-size">
-    <div class="bg-primary mb-3" style="height: 120px;">
-    </div>
     <div class="flex-grow-1 overflow-auto">
-      <div style="margin: -20px 0; position: relative; z-index: 10; border-radius: 20px; background-color: #fff;">
+      <div>
         <div class="p-3">
           <div class="d-flex align-items-center">
             <h6 class="title">{{ store.name }}</h6>
@@ -48,7 +46,7 @@
         <div class="d-flex justify-content-around">
           <span class="col text-white">{{ numberProducts }}</span>
           <span class="col text-white">Ver Carrinho</span>
-          <span class="col text-white">{{ currency(cartTotalProducts) }}</span>
+          <span class="col text-white">{{ currency(cartProductsValueAggregated) }}</span>
         </div>
       </button>
     </div>
@@ -102,7 +100,7 @@ export default {
   },
   computed: {
     ...mapState(useStore, ['store']),
-    ...mapState(useCartStore, ['hasProducts', 'numberProducts', 'cartTotal', 'hasProducts', 'cartTotalProducts']),
+    ...mapState(useCartStore, ['hasProducts', 'numberProducts', 'cartProductsValueAggregated']),
   },
   methods: {
     ...mapActions(useCartStore, ['addProduct']),

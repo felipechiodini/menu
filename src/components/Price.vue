@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex">
     <h5 v-if="price.from" class="me-2">
-      {{ currency(price.to) }}
+      {{ currency(price) }}
     </h5>
     <h5 class="price-from" v-if="price.from !== null">
       {{ currency(price.from) }}

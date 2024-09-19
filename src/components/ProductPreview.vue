@@ -1,15 +1,15 @@
 <template>
-  <modal v-model="show">
+  <Modal v-model="show">
     <button @click="closeModal()" class="button-rounded">
       <i class="pi pi-chevron-left"></i>
     </button>
     <div class="d-flex flex-column" v-if="modelValue !== null">
       <div class="flex-grow-1 overflow-auto">
-        <img style="width: 100%; height: 350px; object-fit: cover;" :src="modelValue.photo.src">
+        <img style="width: 100%; height: 350px; object-fit: cover;" :src="modelValue.image">
         <div class="p-2">
           <h6 class="product-title">{{ modelValue.name }}</h6>
           <p class="product-description">{{ modelValue.description }}</p>
-          <h6 class="my-3">Adicionais <small class="text-muted">Máximo: {{ 1 }}</small></h6>
+          <!-- <h6 class="my-3">Adicionais <small class="text-muted">Máximo: {{ 1 }}</small></h6>
           <div class="row w-100 align-items-center p-2 my-2 mx-0 border rounded pointer" v-for="(additional, key) in modelValue.additionals" :key="additional.id + additional.name + key" @click="inscreaseAdditional(additional)">
             <div class="col-auto p-0">
               <div class="mb-2">{{ additional.name }}</div>
@@ -20,8 +20,8 @@
               <strong class="mx-3" v-if="additionalAmount(additional)">{{ additionalAmount(additional) }}</strong>
               <button :disabled="reachTotalAdditionals()" variant="transparent">+</button>
             </div>
-          </div>
-          <h6 class="my-3">Substituições <small class="text-muted">Máximo: {{ 1 }}</small></h6>
+          </div> -->
+          <!-- <h6 class="my-3">Substituições <small class="text-muted">Máximo: {{ 1 }}</small></h6>
           <label
             class="d-flex w-100 align-items-center p-2 my-2 border rounded pointer"
             v-for="(replacement, key) in modelValue.replacements"
@@ -42,7 +42,7 @@
               @input="onInput"
               :id="`replacement-${replacement.id}`"
             />
-          </label>
+          </label> -->
           <h6 class="mt-4 mb-2">Alguma Observação?</h6>
           <textarea v-model="observation" placeholder="Ex: Tirar a cebola, maionese à parte, ponto da carne, etc." rows="2" class="textarea" />
         </div>
@@ -63,7 +63,7 @@
     <div class="d-flex justify-content-center align-items-center h-100" v-else-if="loading === true">
       <Loading />
     </div>
-  </modal>
+  </Modal>
 </template>
 
 <script>
@@ -102,7 +102,7 @@ export default {
       return this.modelValue !== null
     },
     total() {
-      return (this.modelValue.price.to + this.additionalsTotal + this.replacementTotal) * this.counter
+      return this.modelValue.price * this.counter
     },
     additionalsTotal() {
       return this.additionals.reduce((acumulator, additional) => acumulator += additional.price * additional.amount, 0)
@@ -116,21 +116,8 @@ export default {
     addToCart() {
       this.addProductToCart({
         id: this.modelValue.id,
-        name: this.modelValue.name,
         count: this.counter,
-        observation: this.observation,
-        price: this.modelValue.price,
-        photo: this.modelValue.photo
-        // additionals: this.additionals,
-        // replacements: this.replacements.map(replacement => {
-        //   const r = this.modelValue.replacements.find(r => r.id === replacement)
-
-        //   return {
-        //     id: replacement,
-        //     price: r.value,
-        //     name: r.name
-        //   }
-        // })
+        observation: this.observation
       })
 
       this.closeModal()

@@ -24,11 +24,14 @@ export const useCartStore = defineStore('cart', {
     }
   },
   getters: {
-    cartTotalProducts: (state) => {
-      return state.products.reduce((acumulator, product) => acumulator += (product.price.to * product.count), 0)
-    },
-    cartTotal: (state) => {
-      return state.cartTotalProducts + state.deliveryFee ?? 0
+    cartProductsValueAggregated: (state) => {
+      return state.products.reduce((acumulator, product) => {
+        const { store } = useStore()
+        const rootProduct = store.products.find(storeProduct => storeProduct.id === product.id)
+
+        acumulator += (rootProduct.price * product.count)
+        return acumulator
+      }, 0)
     },
     deliveryFee: (state) => {
       return state.neighborhood?.price || null
@@ -42,10 +45,21 @@ export const useCartStore = defineStore('cart', {
       return null
     },
     cartProducts: (state) => {
-      return state.products
+      return state.products.map(product => {
+        const { store } = useStore()
+        const rootProduct = store.products.find(storeProduct => storeProduct.id === product.id)
+
+        return {
+          id: product.id,
+          name: rootProduct.name,
+          image: rootProduct.image,
+          count: product.count,
+          price: rootProduct.price
+        }
+      })
     },
     numberProducts: (state) => {
-      return state.products.reduce((acumulator, product) => acumulator += product.count, 0)
+      return state.products.length
     },
     hasProducts: (state) => {
       return state.numberProducts > 0

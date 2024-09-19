@@ -2,8 +2,8 @@
   <div class="d-flex flex-column content-size">
     <CartHeader @click="$emit('back')" />
     <div class="flex-grow-1 overflow-auto">
-      <div class="d-flex m-0 p-3 border-bottom" @click="$emit('open-preview', product.id)" v-for="(product, key) in products" :key="key">
-        <img class="image rounded" :src="product.photo.src">
+      <div class="d-flex m-0 p-3 border-bottom" @click="$emit('open-preview', product.id)" v-for="(product, key) in cartProducts" :key="key">
+        <img class="image rounded" :src="product.image">
         <div class="col px-2">
           <h6 class="mb-3 title">{{ product.name }}</h6>
           <template v-if="product.additionals">
@@ -16,7 +16,7 @@
               <span>{{ replacement.name }}</span>
             </div>
           </template>
-          <span class="title">{{ currency(calculateTotal(product)) }}</span>
+          <span class="title">{{ currency(product.price * product.count) }}</span>
         </div>
         <div class="col-auto ms-auto p-0 align-self-end d-flex align-items-center justify-content-center p-1 border rounded">
           <button class="btn" @click="localDecrement(product.id)">
@@ -34,7 +34,7 @@
       <table class="mb-3 mt-1 w-100">
         <tr>
           <td class="p-1">Total</td>
-          <td class="p-1" align="right">{{ currency(cartTotal) }}</td>
+          <td class="p-1" align="right">{{ currency(cartProductsValueAggregated) }}</td>
         </tr>
       </table>
       <div class="d-flex justify-content-between gap-2">
@@ -53,6 +53,7 @@
 import CartHeader from './Header.vue'
 import { mapActions, mapState } from 'pinia'
 import { useCartStore } from '@/stores/cart';
+import { useStore } from '@/stores/store';
 
 export default {
   name: 'step-one',
@@ -60,7 +61,8 @@ export default {
     CartHeader
   },
   computed: {
-    ...mapState(useCartStore, ['products', 'numberProducts', 'hasProducts', 'cartTotal'])
+    ...mapState(useStore, ['store']),
+    ...mapState(useCartStore, ['cartProducts', 'numberProducts', 'hasProducts', 'cartProductsValueAggregated']),
   },
   methods: {
     ...mapActions(useCartStore, ['decrementProduct', 'incrementProduct']),
@@ -70,9 +72,6 @@ export default {
       if (this.numberProducts === 0) {
         this.$emit('back') // close modal
       }
-    },
-    calculateTotal(product) {
-      return product.price.to * product.count
     }
   }
 }

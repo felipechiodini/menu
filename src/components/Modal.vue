@@ -36,7 +36,7 @@ export default {
   }
 
   .opened {
-    display: flex;
+    display: block;
     animation: slide-up 0.3s ease-out forwards;
   }
 
