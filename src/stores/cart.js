@@ -9,9 +9,9 @@ export const useCartStore = defineStore('cart', {
         type: null
       },
       customer: {
-        name: 'Felipe',
-        cellphone: '47999999999',
-        cpf: '111.111.111-11'
+        name: 'Felipe Chiodini Bona',
+        cellphone: '47999097073',
+        cpf: '11048424910'
       },
       address: {
         neighborhood_id: null,
